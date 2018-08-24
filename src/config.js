@@ -5,11 +5,8 @@ module.exports = {
   init(configPath) {
     const config = require(configPath);
     Object.assign(this, config);
-    this.basePath = path.dirname(configPath);
-    this.templatesPath = path.join(this.basePath, 'templates');
-    this.modelsPath = path.join(this.basePath, 'models');
-    this.routesPath = path.join(this.basePath, 'routes');
-    this.helpersPath = path.join(__dirname, 'helpers');
+    this.appPath = path.dirname(configPath);
+    this.nodanoPath = __dirname;
   },
   loadDirectoryFiles(rootPath, extension, callback) {
     const files = fs.readdirSync(rootPath);
@@ -19,5 +16,11 @@ module.exports = {
       const completePath = path.join(rootPath, relativePath);
       callback(code, relativePath, completePath);
     }
+  },
+  getAppPath(subPath) {
+    return path.join(this.appPath, subPath);
+  },
+  getNodanoPath(subPath) {
+    return path.join(this.nodanoPath, subPath);
   },
 };

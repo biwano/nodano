@@ -1,29 +1,9 @@
 {
-  "_from": "file:/home/biwano/code/nodano/nodano-0.1.0.tgz",
-  "_id": "nodano@0.1.0",
-  "_inBundle": false,
-  "_integrity": "sha512-dK7O7tW50Dtx+LZUru5Nm3YqjArByay0ul5ULzl3f8Z5sXKTi0/Mim6+MX/DyAbK3XHSqLTIVSyG7Rb2sVmlOw==",
-  "_location": "/nodano",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "file",
-    "where": "/home/biwano/code/bluejong/server",
-    "raw": "/home/biwano/code/nodano/nodano-0.1.0.tgz",
-    "rawSpec": "/home/biwano/code/nodano/nodano-0.1.0.tgz",
-    "saveSpec": "file:/home/biwano/code/nodano/nodano-0.1.0.tgz",
-    "fetchSpec": "/home/biwano/code/nodano/nodano-0.1.0.tgz"
-  },
-  "_requiredBy": [
-    "#USER"
-  ],
-  "_resolved": "/home/biwano/code/nodano/nodano-0.1.0.tgz",
-  "_spec": "/home/biwano/code/nodano/nodano-0.1.0.tgz",
-  "_where": "/home/biwano/code/bluejong/server",
   "author": {
     "name": "Bruno Ilponse"
   },
   "bugs": {
-    "url": "https://github.com/biwano/mahjongsheet/issues"
+    "url": "https://github.com/biwano/nodano/issues"
   },
   "bundleDependencies": false,
   "dependencies": {
@@ -45,7 +25,8 @@
   "devDependencies": {
     "eslint": "^4.15.0",
     "eslint-config-airbnb-base": "^11.3.0",
-    "eslint-plugin-import": "^2.11.0"
+    "eslint-plugin-import": "^2.11.0",
+    "mocha": "^5.2.0"
   },
   "homepage": "https://github.com/biwano/nodano#readme",
   "keywords": [],
@@ -57,8 +38,7 @@
     "url": "git+https://github.com/biwano/nodano.git"
   },
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --watch test/cases/index.js"
   },
-  "version": "0.1.0"
+  "version": "0.2.0"
 }

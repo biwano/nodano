@@ -10,34 +10,41 @@ const mailMiddleware = require('./middlewares/mail.middleware.js');
 const responseMiddleware = require('./middlewares/response.middleware.js');
 
 module.exports = {
-  configure(app, configPath, callback) {
-    // Initializing config
-    config.init(configPath);
+  configure(app, configPath) {
+    return new Promise(((resolve) => {
+      // Initializing config
+      config.init(configPath);
 
-    // Initializing helpers
-    config.loadDirectoryFiles(config.helpersPath, '.helper.js', (code, relativePath, completePath) => {
-      const helper = require(completePath);
-      if (helper.init !== undefined) helper.init(config);
-    });
+      // Initializing helpers
+      config.loadDirectoryFiles(config.getNodanoPath('helpers'), '.helper.js',
+        (code, relativePath, completePath) => {
+          const helper = require(completePath);
+          if (helper.init !== undefined) helper.init(config);
+        });
 
-    // Connecting database
-    const connection = persistenceHelper.connect();
-    connection.once('open', () => {
-      // Loading middlewares
-      app.use(bodyParser.json());
-      app.use(loggerMiddleware);
-      app.use(responseMiddleware);
-      app.use(modelMiddleware);
-      app.use(mailMiddleware);
-      app.use(authMiddleware(connection));
+      // Connecting database
+      config.connection = persistenceHelper.connect();
+      config.connection.once('open', () => {
+        // Loading middlewares
+        app.use(bodyParser.json());
+        app.use(loggerMiddleware);
+        app.use(responseMiddleware);
+        app.use(modelMiddleware);
+        app.use(mailMiddleware);
+        app.use(authMiddleware(config.connection));
 
-      // Loading routes
-      config.loadDirectoryFiles(config.routesPath, '.route.js', (code, relativePath, completePath) => {
-        app.use(`/api/${code}`, require(completePath));
+        const initRoutes = function initRoutes(path) {
+          config.loadDirectoryFiles(path, '.route.js', (code, relativePath, completePath) => {
+            app.use(`/api/${code}`, require(completePath));
+          });
+        };
+        // Loading routes
+        initRoutes(config.getNodanoPath('routes'));
+        initRoutes(config.getAppPath('routes'));
+
+        resolve({ app, config });
       });
-
-      if (callback !== undefined) callback(app);
-    });
+    }));
   },
-  preSave: modelHelper.preSave,
+  model: modelHelper.model,
 };
