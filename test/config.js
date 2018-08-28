@@ -4,6 +4,7 @@ module.exports = {
   token_secret: 'this is a secret!',
   persistence: {
     url: 'mongodb://localhost:27017/test',
+    useNewUrlParser: true,
   },
   mail: {
     host: 'smtp.mailtrap.io',

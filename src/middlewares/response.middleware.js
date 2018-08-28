@@ -10,6 +10,13 @@ function init(nodano) {
       const message = err;
       res.json({ status, message, payload });
     };
+    res.sendData = function sendData(data) {
+      res.Logger.debug(`Network ${data}`);
+      res.json(data);
+    };
+    res.sendDataVersion = function sendDataVersion(data) {
+      res.json({ __v: data.__v });
+    };
     res.sendSuccess = function success(data) {
       if (!debug || data === undefined) {
         res.sendResponse(data);
@@ -27,13 +34,6 @@ function init(nodano) {
     res.sendException = function unexpected(exception) {
       res.Logger.exception(exception);
       res.sendError('unexpected', exception);
-    };
-    res.sendData = function sendData(data) {
-      res.Logger.debug(data);
-      res.json(data);
-    };
-    res.sendDataVersion = function sendDataVersion(data) {
-      res.json({ __v: data.__v });
     };
     next();
   });

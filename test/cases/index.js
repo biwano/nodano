@@ -1,26 +1,15 @@
 /* global after, it, describe */
-const assert = require('assert');
 const { appPromise, server } = require('../index.js');
-const test = require('../../src/index.js').test;
+const auth = require('./auth.test.js');
 
 let nodano;
 describe('App', () => {
   it('should be configured', async () => {
     nodano = await appPromise;
-    // console.log(globals.app);
-    // assert.strictEqual(config.version, '1.0');
+    auth.init(nodano);
   });
-  describe('Auth', () => {
-    it('should get guest user information', async () => {
-      const auth = await test.get('auth');
-      assert.equal(auth.type, 'guest');
-    });
-    it('should request registration', async () => {
-      const token = await test.post('auth/request_registration', { email: 'a@a.com' });
-      console.log(token);
-      assert.equal(token.value.length > 50, true);
-    });
-  });
+
+  describe('Auth', auth.description);
 });
 after(() => {
   server.close();
