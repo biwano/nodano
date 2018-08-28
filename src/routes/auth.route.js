@@ -1,5 +1,4 @@
 const jwt = require('json-web-token');
-const config = require('../config');
 const express = require('express');
 const bcrypt = require('bcrypt');
 
@@ -48,13 +47,13 @@ router.post('/request_registration', async (req, res) => {
         userId: req.user._id,
         email,
       };
-      const secret = config.token_secret;
+      const secret = res.config.token_secret;
       const token = await jwt.encode(secret, payload);
       // building link
-      const link = `${config.client_url}/register/${token.value}`;
+      const link = `${res.config.client_url}/register/${token.value}`;
       // sending email
       await res.Mailer.sendTemplate('registration_link', email, { link }, 'en');
-      res.sendSuccess();
+      res.sendSuccess(token);
     }
   } catch (e) {
     res.sendException(e);
@@ -63,7 +62,7 @@ router.post('/request_registration', async (req, res) => {
 // Check token
 router.get('/check_token/:token', async (req, res) => {
   try {
-    const secret = config.token_secret;
+    const secret = res.config.token_secret;
     const token = req.params.token;
     const payload = await jwt.decode(secret, token);
     if (payload.error !== null) {
@@ -81,7 +80,7 @@ router.post('/register', async (req, res) => {
   try {
     const password = req.body.password;
     const token = req.body.token;
-    const secret = config.token_secret;
+    const secret = res.config.token_secret;
     const saltRounds = 10;
     const payload = await jwt.decode(secret, token).value;
     // Checking if email already used

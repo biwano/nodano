@@ -3,7 +3,7 @@ module.exports = {
   client_url: 'http://localhost:8080/#',
   token_secret: 'this is a secret!',
   persistence: {
-    url: 'mongodb://localhost/test',
+    url: 'mongodb://localhost:27017/test',
   },
   mail: {
     host: 'smtp.mailtrap.io',
@@ -14,4 +14,5 @@ module.exports = {
     },
     from: 'no-reply@test.com',
   },
+  debug: true,
 };

@@ -3,7 +3,8 @@ const session = require('express-session');
 const cors = require('cors');
 const MongoStore = require('connect-mongo')(session);
 
-function createRouter(connection) {
+function init(nodano) {
+  const connection = nodano.connection;
   const router = express.Router();
   // Sessions
   router.use(session({
@@ -45,6 +46,6 @@ function createRouter(connection) {
   router.options('*', cors(corsOptions));
   return router;
 }
-
-module.exports = createRouter;
+function destroy() {}
+module.exports = { priority: 80, init, destroy };
 
